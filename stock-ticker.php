@@ -131,7 +131,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				// Schedule an action if it's not already scheduled
 				if ( ! wp_next_scheduled( 'isa_update_ticker' ) ) {
 				    wp_schedule_event( time(), 'run_ticker_update', 'isa_update_ticker' );
-				    // error_log('job scheduled');
+				    error_log('job scheduled');
 				}
 
 				// Hook into that action to the isa.
@@ -141,16 +141,16 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					global $wpdb;
 					
-					// error_log(print_r($item, TRUE));
+					error_log(print_r($item, TRUE));
 
 					$symbol_to_fetch = $item->symbol;
 					$last_volume = $item->{'24h_volume_usd'};
 					$changep = $item->{'percent_change_24h'};
 					$table_name = 'wp_stock_ticker_data';
 
-					// error_log($last_volume);
+					error_log($last_volume);
 
-					// error_log($symbol_to_fetch);
+					error_log($symbol_to_fetch);
 
 					$symbol_exists = $wpdb->get_var( $wpdb->prepare(
 						"
@@ -251,7 +251,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					// Is failed updated data in DB
 					if ( false === $ret ) {
 						$msg = "Stock Ticker Fatal Error: Failed to save stock data for {$symbol_to_fetch} to database!";
-						// error_log( $msg );
+						error_log( $msg );
 						// Release processing for next run
 						// self::unlock_fetch();
 						// Return failed status
@@ -263,7 +263,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					// After success update in database, report in log
 					$msg = "Stock data for symbol {$symbol_to_fetch} has been updated in database.";
-					// error_log( $msg );
+					error_log( $msg );
 					// Set last fetched symbol
 					update_option( 'stockticker_av_last', $symbol_to_fetch );
 					// Release processing for next run
@@ -277,13 +277,13 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 				function update_ticker_db($data) {
 					// Push the new ticker data to the DB.
-					// error_log(count($data));
+					error_log(count($data));
 
 					// Cycle through the array and json_decode each element.
 					$limit = count($data) - 4;
-					// error_log('Updating ' . $limit . " items");
+					error_log('Updating ' . $limit . " items");
 					for ( $i = 0; $i < $limit; $i++){
-						// error_log('pushed ' . $data[$i]->symbol . 'to db');
+						error_log('pushed ' . $data[$i]->symbol . 'to db');
 
 						push_item($data[$i]);
 					}
@@ -303,7 +303,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					// self::log( 'Fetching data from AV: ' . $feed_url );
 					$response = wp_remote_get( $feed_url, $wparg );
-					// error_log('Sending to db put');
+					error_log('Sending to db put');
 					update_ticker_db(json_decode($response['body']));
 				}	
 
@@ -1413,7 +1413,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 			if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) {
 				$log_file = trailingslashit( WP_CONTENT_DIR ) . 'stockticker.log';
 				$date = date( 'c' );
-				// error_log( "{$date}: {$str}\n", 3, $log_file );
+				error_log( "{$date}: {$str}\n", 3, $log_file );
 			}
 		}
 	} // END class Wpau_Stock_Ticker
