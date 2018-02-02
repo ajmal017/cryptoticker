@@ -120,13 +120,13 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			// 	)
 			// );
 			// // Force fetch stock
-			// add_settings_field(
-			// 	$this->option_name . 'force_fetch',
-			// 	__( 'Force data fetch', 'wpaust' ),
-			// 	array( &$this, 'settings_js_forcedatafetch' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_general'
-			// );
+			add_settings_field(
+				$this->option_name . 'force_fetch',
+				__( 'Force data fetch', 'wpaust' ),
+				array( &$this, 'settings_js_forcedatafetch' ),
+				$wpau_stockticker->plugin_slug,
+				'wpaust_general'
+			);
 
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(

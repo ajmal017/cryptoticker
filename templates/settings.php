@@ -21,7 +21,7 @@ global $wpau_stockticker;
 	<div class="stock_ticker_wrapper">
 		<div class="content_cell">
 			<form method="post" action="options.php">
-			
+				<?php settings_fields( 'wpaust_general' ); ?>
 				<?php settings_fields( 'wpaust_default' ); ?>
 				<?php settings_fields( 'wpaust_advanced' ); ?>
 				<?php do_settings_sections( $wpau_stockticker->plugin_slug ); ?>
