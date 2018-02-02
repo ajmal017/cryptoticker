@@ -50,83 +50,83 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 				$wpau_stockticker->plugin_slug
 			);
 
-			// Add setting's fields.
-			add_settings_field(
-				$this->option_name . 'avapikey',
-				__( 'AlphaVantage.co API Key', 'wpaust' ),
-				array( &$this, 'settings_field_input_password' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_general',
-				array(
-					'field'       => $this->option_name . '[avapikey]',
-					'description' => sprintf(
-						wp_kses(
-							__( 'To get stock data we use AlphaVantage.co API. If you do not have it already, <a href="%1$s" target="_blank">%2$s</a> and enter it here.', 'wpaust' ),
-							array(
-								'a' => array(
-									'href' => array(),
-									'target' => array( '_blank' ),
-								),
-							)
-						),
-						esc_url( 'https://www.alphavantage.co/support/#api-key' ),
-						__( 'Claim your free API Key', 'wpaust' )
-					),
-					'class'       => 'widefat',
-					'value'       => $this->defaults['avapikey'],
-				)
-			);
+			// // Add setting's fields.
+			// add_settings_field(
+			// 	$this->option_name . 'avapikey',
+			// 	__( 'AlphaVantage.co API Key', 'wpaust' ),
+			// 	array( &$this, 'settings_field_input_password' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_general',
+			// 	array(
+			// 		'field'       => $this->option_name . '[avapikey]',
+			// 		'description' => sprintf(
+			// 			wp_kses(
+			// 				__( 'To get stock data we use AlphaVantage.co API. If you do not have it already, <a href="%1$s" target="_blank">%2$s</a> and enter it here.', 'wpaust' ),
+			// 				array(
+			// 					'a' => array(
+			// 						'href' => array(),
+			// 						'target' => array( '_blank' ),
+			// 					),
+			// 				)
+			// 			),
+			// 			esc_url( 'https://www.alphavantage.co/support/#api-key' ),
+			// 			__( 'Claim your free API Key', 'wpaust' )
+			// 		),
+			// 		'class'       => 'widefat',
+			// 		'value'       => $this->defaults['avapikey'],
+			// 	)
+			// );
 			add_settings_field(
 				$this->option_name . 'all_symbols',
-				__( 'All Stock Symbols', 'wpaust' ),
+				__( 'All Token Symbols', 'wpaust' ),
 				array( &$this, 'settings_field_input_text' ),
 				$wpau_stockticker->plugin_slug,
 				'wpaust_general',
 				array(
 					'field'       => $this->option_name . '[all_symbols]',
-					'description' => __( 'You can use some or all of those symbils in any ticker on website. Please note, you have to define which symbols you will use per widget/shortcode. Enter stock symbols separated with comma.', 'wpaust' ),
+					'description' => __( 'These tokens will be downloaded and saved to the database. See the list at the bottom of this page for all supported tokens.', 'wpaust' ),
 					'class'       => 'widefat',
 					'value'       => $this->defaults['all_symbols'],
 				)
 			);
-			add_settings_field(
-				$this->option_name . 'loading_message',
-				__( 'Loading Message', 'wpaust' ),
-				array( &$this, 'settings_field_input_text' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_general',
-				array(
-					'field'       => $this->option_name . '[loading_message]',
-					'description' => __( 'Customize message displayed to visitor until plugin load stock data through AJAX.', 'wpaust' ),
-					'class'       => 'widefat',
-					'value'       => $this->defaults['loading_message'],
-				)
-			);
+			// add_settings_field(
+			// 	$this->option_name . 'loading_message',
+			// 	__( 'Loading Message', 'wpaust' ),
+			// 	array( &$this, 'settings_field_input_text' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_general',
+			// 	array(
+			// 		'field'       => $this->option_name . '[loading_message]',
+			// 		'description' => __( 'Customize message displayed to visitor until plugin load stock data through AJAX.', 'wpaust' ),
+			// 		'class'       => 'widefat',
+			// 		'value'       => $this->defaults['loading_message'],
+			// 	)
+			// );
 			// Default error message.
-			add_settings_field(
-				$this->option_name . 'error_message',
-				__( 'Error Message', 'wpaust' ),
-				array( &$this, 'settings_field_input_text' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_general',
-				array(
-					'field'       => $this->option_name . '[error_message]',
-					'description' => __(
-						'When we do not have pre-fetched stock data for symbols requested in block from AlphaVantage.co, display this message in ticker',
-						'wpaust'
-					),
-					'class'       => 'widefat',
-					'value'       => $this->defaults['error_message'],
-				)
-			);
-			// Force fetch stock
-			add_settings_field(
-				$this->option_name . 'force_fetch',
-				__( 'Force data fetch', 'wpaust' ),
-				array( &$this, 'settings_js_forcedatafetch' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_general'
-			);
+			// add_settings_field(
+			// 	$this->option_name . 'error_message',
+			// 	__( 'Error Message', 'wpaust' ),
+			// 	array( &$this, 'settings_field_input_text' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_general',
+			// 	array(
+			// 		'field'       => $this->option_name . '[error_message]',
+			// 		'description' => __(
+			// 			'When we do not have pre-fetched stock data for symbols requested in block from AlphaVantage.co, display this message in ticker',
+			// 			'wpaust'
+			// 		),
+			// 		'class'       => 'widefat',
+			// 		'value'       => $this->defaults['error_message'],
+			// 	)
+			// );
+			// // Force fetch stock
+			// add_settings_field(
+			// 	$this->option_name . 'force_fetch',
+			// 	__( 'Force data fetch', 'wpaust' ),
+			// 	array( &$this, 'settings_js_forcedatafetch' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_general'
+			// );
 
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(
@@ -145,13 +145,13 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			// Add setting's fields.
 			add_settings_field(
 				$this->option_name . 'symbols',
-				__( 'Stock Symbols', 'wpaust' ),
+				__( 'Show Symbols', 'wpaust' ),
 				array( &$this, 'settings_field_input_text' ),
 				$wpau_stockticker->plugin_slug,
 				'wpaust_default',
 				array(
 					'field'       => $this->option_name . '[symbols]',
-					'description' => __( 'Those simbols are used as default for shortcodes w/o provided symbols, but not for widgets as widget have own symbold setting. Enter stock symbols separated with comma.', 'wpaust' ),
+					'description' => __( 'These symbols will be displayed in the ticker. (Must be fetched in the set above.)', 'wpaust' ),
 					'class'       => 'widefat',
 					'value'       => $this->defaults['symbols'],
 				)
@@ -326,40 +326,40 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					),
 				)
 			);
-			// Caching timeout field.
-			add_settings_field(
-				$this->option_name . 'cache_timeout',
-				__( 'Cache Timeout', 'wpaust' ),
-				array( &$this, 'settings_field_input_number' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_advanced',
-				array(
-					'field'       => $this->option_name . '[cache_timeout]',
-					'description' => __( 'Define timeout before next round of fetching symbol data start, in seconds', 'wpaust' ),
-					'class'       => 'num small-text',
-					'value'       => isset( $this->defaults['cache_timeout'] ) ? $this->defaults['cache_timeout'] : 180,
-					'min'         => 0,
-					'max'         => DAY_IN_SECONDS,
-					'step'        => 5,
-				)
-			);
-			// Fetch timeout field.
-			add_settings_field(
-				$this->option_name . 'timeout',
-				__( 'Fetch Timeout', 'wpaust' ),
-				array( &$this, 'settings_field_input_number' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_advanced',
-				array(
-					'field'       => $this->option_name . '[timeout]',
-					'description' => __( 'Define timeout to fetch quote feed before give up and display error message, in seconds (default is 2)', 'wpaust' ),
-					'class'       => 'num small-text',
-					'value'       => isset( $this->defaults['timeout'] ) ? $this->defaults['timeout'] : 2,
-					'min'         => 1,
-					'max'         => 60,
-					'step'        => 1,
-				)
-			);
+			// // Caching timeout field.
+			// add_settings_field(
+			// 	$this->option_name . 'cache_timeout',
+			// 	__( 'Cache Timeout', 'wpaust' ),
+			// 	array( &$this, 'settings_field_input_number' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_advanced',
+			// 	array(
+			// 		'field'       => $this->option_name . '[cache_timeout]',
+			// 		'description' => __( 'Define timeout before next round of fetching symbol data start, in seconds', 'wpaust' ),
+			// 		'class'       => 'num small-text',
+			// 		'value'       => isset( $this->defaults['cache_timeout'] ) ? $this->defaults['cache_timeout'] : 180,
+			// 		'min'         => 0,
+			// 		'max'         => DAY_IN_SECONDS,
+			// 		'step'        => 5,
+			// 	)
+			// );
+			// // Fetch timeout field.
+			// add_settings_field(
+			// 	$this->option_name . 'timeout',
+			// 	__( 'Fetch Timeout', 'wpaust' ),
+			// 	array( &$this, 'settings_field_input_number' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_advanced',
+			// 	array(
+			// 		'field'       => $this->option_name . '[timeout]',
+			// 		'description' => __( 'Define timeout to fetch quote feed before give up and display error message, in seconds (default is 2)', 'wpaust' ),
+			// 		'class'       => 'num small-text',
+			// 		'value'       => isset( $this->defaults['timeout'] ) ? $this->defaults['timeout'] : 2,
+			// 		'min'         => 1,
+			// 		'max'         => 60,
+			// 		'step'        => 1,
+			// 	)
+			// );
 
 			// Default styling.
 			add_settings_field(
@@ -392,23 +392,23 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 				) // args
 			);
 
-			// Refresh timeout field.
-			add_settings_field(
-				$this->option_name . 'refresh_timeout',
-				__( 'Refresh Timeout', 'wpaust' ),
-				array( &$this, 'settings_field_input_number' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_advanced',
-				array(
-					'field'       => $this->option_name . '[refresh_timeout]',
-					'description' => __( 'Define auto refresh timeout, in seconds', 'wpaust' ),
-					'class'       => 'num small-text',
-					'value'       => isset( $this->defaults['refresh_timeout'] ) ? $this->defaults['refresh_timeout'] : 2,
-					'min'         => 0,
-					'max'         => HOUR_IN_SECONDS,
-					'step'        => 5,
-				)
-			);
+			// // Refresh timeout field.
+			// add_settings_field(
+			// 	$this->option_name . 'refresh_timeout',
+			// 	__( 'Refresh Timeout', 'wpaust' ),
+			// 	array( &$this, 'settings_field_input_number' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_advanced',
+			// 	array(
+			// 		'field'       => $this->option_name . '[refresh_timeout]',
+			// 		'description' => __( 'Define auto refresh timeout, in seconds', 'wpaust' ),
+			// 		'class'       => 'num small-text',
+			// 		'value'       => isset( $this->defaults['refresh_timeout'] ) ? $this->defaults['refresh_timeout'] : 2,
+			// 		'min'         => 0,
+			// 		'max'         => HOUR_IN_SECONDS,
+			// 		'step'        => 5,
+			// 	)
+			// );
 
 			// Global enqueue assets.
 			add_settings_field(

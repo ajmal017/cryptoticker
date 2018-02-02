@@ -21,7 +21,7 @@ global $wpau_stockticker;
 	<div class="stock_ticker_wrapper">
 		<div class="content_cell">
 			<form method="post" action="options.php">
-				<?php settings_fields( 'wpaust_general' ); ?>
+			
 				<?php settings_fields( 'wpaust_default' ); ?>
 				<?php settings_fields( 'wpaust_advanced' ); ?>
 				<?php do_settings_sections( $wpau_stockticker->plugin_slug ); ?>
@@ -38,10 +38,10 @@ global $wpau_stockticker;
 			<h2><?php esc_attr_e( 'Disclaimer', 'wpaust' ); ?></h2>
 			<p class="description"><?php
 				printf(
-				__( 'Since %1$s version %2$s source for all stock data used in plugin is provided by %3$s, displayed for informational and educational purposes only and should not be considered as investment advise. <br />Author of the plugin does not accept liability or responsibility for your use of plugin, including but not limited to trading and investment results.' ),
+				__( 'All data provided by CoinMarketCap.com is displayed for informational and educational purposes only and should not be considered as investment advise. <br />Author of the plugin does not accept liability or responsibility for your use of plugin, including but not limited to trading and investment results.' ),
 				__( 'Stock Ticker', 'wpaust' ),
-				'3.0.0',
-				'<strong>Alpha Vantage</strong>'
+				'1.0.0',
+				'<strong>Blockchain.wtf</strong>'
 				);
 			?></p>
 
@@ -65,14 +65,15 @@ global $wpau_stockticker;
 			</ul>
 		</p>
 
-		<h2><?php esc_attr_e( 'Supported Stock Exchanges', 'wpaust' ); ?></h2>
+		<h2><?php esc_attr_e( 'All Data from CoinMarketCap.com - Supported Tokens:', 'wpaust' ); ?></h2>
 		<ul>
 			<?php
-			foreach ( $wpau_stockticker::$exchanges as $symbol => $name ) {
+				$supported = ['BTC - Bitcoin','ETH - Ethereum','XRP - Ripple','BCH - Bitcoin Cash','ADA - Cardano','XLM - Stellar','NEO - NEO','LTC - Litecoin','EOS - EOS','XEM - NEM','MIOTA - IOTA','DASH - Dash','XMR - Monero','TRX - TRON','LSK - Lisk','VEN - VeChain','QTUM - Qtum','ETC - Ethereum Classic','USDT - Tether','XRB - Nano','ICX - ICON','PPT - Populous','BTG - Bitcoin Gold','OMG - OmiseGO','ZEC - Zcash','STEEM - Steem','BTS - BitShares','STRAT - Stratis','BNB - Binance Coin','BCN - Bytecoin','SC - Siacoin','XVG - Verge','MKR - Maker','ZRX - 0x','VERI - Veritaseum','DGD - DigixDAO','WTC - Walton','REP - Augur','WAVES - Waves','KCS - KuCoin Shares','SNT - Status','RHOC - RChain','AE - Aeternity','DCR - Decred','DOGE - Dogecoin','ARDR - Ardor','HSR - Hshare','GAS - Gas','KMD - Komodo','KNC - Kyber Network','ZIL - Zilliqa','BAT - Basic Attention Token','DRGN - Dragonchain','LRC - Loopring','ARK - Ark','DGB - DigiByte','ELF - aelf','ETN - Electroneum','IOST - IOStoken','QASH - QASH','PIVX - PIVX','NAS - Nebulas','ZCL - ZClassic','PLR - Pillar','BTM - Bytom','GBYTE - Byteball Bytes','GNT - Golem','DCN - Dentacoin','CNX - Cryptonex','CND - Cindicator','ETHOS - Ethos','FUN - FunFair','R - Revain','AION - Aion','SALT - SALT','SYS - Syscoin','FCT - Factom','GXS - GXShares','BTX - Bitcore','POWR - Power Ledger','DENT - Dent','AGI - SingularityNET','XZC - ZCoin','SMART - SmartCash','NXT - Nxt','IGNIS - Ignis','REQ - Request Network','MAID - MaidSafeCoin','KIN - Kin','RDD - ReddCoin','NXS - Nexus','ENG - Enigma','BNT - Bancor','MONA - MonaCoin','PAY - TenX','ICN - Iconomi','PART - Particl','GNO - Gnosis','WAX - WAX','NEBL - Neblio'];
+
+			foreach ( $supported as $symbol ) {
 				printf(
-					'<li><strong>%1$s</strong> - %2$s</li>',
-					$symbol,
-					$name
+					'<li><strong>%1$s</strong></li>',
+					$symbol
 				);
 			}
 			?>

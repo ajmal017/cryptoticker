@@ -48,7 +48,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 		
 
 		const DB_VER = 6;
-		const VER = '3.0.3';
+		const VER = '1.0.0';
 
 		public $plugin_name   = 'Stock Ticker';
 		public $plugin_slug   = 'stock-ticker';
@@ -145,7 +145,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					$symbol_to_fetch = $item->symbol;
 					$last_volume = $item->{'24h_volume_usd'};
-					$changep = $item->{'percent_change_24h'};
+					$changep = $item->{'percent_change_1h'};
 					$table_name = 'wp_stock_ticker_data';
 
 					error_log($last_volume);
@@ -355,15 +355,15 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 			$missing_option = array();
 
-			// If no AlphaVantage API Key, display admin notice
-			if ( empty( $this->defaults['avapikey'] ) ) {
-				$missing_option[] = __( 'AlphaVantage.co API Key', 'wpaust' );
-			}
+			// // If no AlphaVantage API Key, display admin notice
+			// if ( empty( $this->defaults['avapikey'] ) ) {
+			// 	$missing_option[] = __( 'AlphaVantage.co API Key', 'wpaust' );
+			// }
 
-			// If no all symbls, display admin notice
-			if ( empty( $this->defaults['all_symbols'] ) ) {
-				$missing_option[] = __( 'All Stock Symbols', 'wpaust' );
-			}
+			// // If no all symbls, display admin notice
+			// if ( empty( $this->defaults['all_symbols'] ) ) {
+			// 	$missing_option[] = __( 'All Stock Symbols', 'wpaust' );
+			// }
 
 			if ( ! empty( $missing_option ) ) {
 				$class = 'notice notice-error';
