@@ -146,7 +146,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$symbol_to_fetch = $item->symbol;
 					$last_volume = $item->{'24h_volume_usd'};
 					$changep = $item->{'percent_change_1h'};
-					$table_name = 'wp_stock_ticker_data';
+					$table_name = $wpdb->prefix . 'stock_ticker_data';
+					error_log('table: ' . $table_name);
 
 					error_log($last_volume);
 
@@ -161,21 +162,33 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 						$symbol_to_fetch
 					) );
 
+					// $new_timestamp = date("Y-m-d H:m:s", $item->last_updated);
+					$new_date = new DateTime();
+					$new_timestamp = date("Y-m-d H:i:s", $new_date->getTimestamp());
+					error_log('input date:');
+					error_log($item->updated);
+					error_log('new date:');
+					error_log($new_timestamp);
 
+					$format = 							array(
+								'%s', // symbol
+								'%s', // raw
+								'%s', // last_refreshed
+								'%s', // tz
+								'%f', // last_open
+								'%f', // last_high
+								'%f', // last_low
+								'%f', // last_close
+								'%d', // last_volume
+								'%f', // last_change
+								'%f', // last_changep
+								'%s', // range
+							);
 
-					if ( ! empty( $symbol_exists ) ) {
-
-
-
-						// UPDATE
-						$ret = $wpdb->update(
-							// table
-							$table_name,
-							// data
-							array(
+					$payload = array(
 								'symbol'         => $item->symbol,
 								'raw'            => json_encode($item),
-								'last_refreshed' => $item->last_updated,
+								'last_refreshed' => $new_timestamp,
 								'tz'             => "US Eastern",
 								'last_open'      => $item->price_usd,
 								'last_high'      => $item->price_usd,
@@ -185,68 +198,46 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 								'change'         => ( $changep * $item->price_usd ),
 								'changep'        => $changep,
 								'range'          => $item->symbol,
-							),
+							);
+					error_log('maybe sending payload for ' . $payload['symbol']);
+					error_log(print_r($payload, TRUE));
+
+					if ( ! empty( $symbol_exists ) ) {
+
+						error_log('sending payload as update');
+						// UPDATE
+						$ret = $wpdb->update(
+							// table
+							$table_name,
+							// data
+							$payload,
 							// WHERE
 							array(
-								'symbol' => $stock_data['t'],
+								'symbol' => $payload['symbol'],
 							),
 							// format
-							array(
-								'%s', // symbol
-								'%s', // raw
-								'%s', // last_refreshed
-								'%s', // tz
-								'%f', // last_open
-								'%f', // last_high
-								'%f', // last_low
-								'%f', // last_close
-								'%d', // last_volume
-								'%f', // last_change
-								'%f', // last_changep
-								'%s', // range
-							),
+							$format,
 							// WHERE format
 							array(
 								'%s',
 							)
 						);
 					} else {
+
+						error_log('sending payload as insert');
 						// INSERT
 						$ret = $wpdb->insert(
 							// table
 							$table_name,
 							// data
-							array(
-								'symbol'         => $item->symbol,
-								'raw'            => json_encode($item),
-								'last_refreshed' => $item->last_updated,
-								'tz'             => "US Eastern",
-								'last_open'      => $item->price_usd,
-								'last_high'      => $item->price_usd,
-								'last_low'       => $item->price_usd,
-								'last_close'     => $item->price_usd,
-								'last_volume'    => $last_volume,
-								'change'         => ( $changep * $item->price_usd ),
-								'changep'        => $changep,
-								'range'          => $item->symbol,						
-								),
+							$payload,
 							// format
-							array(
-								'%s', // symbol
-								'%s', // raw
-								'%s', // last_refreshed
-								'%s', // tz
-								'%f', // last_open
-								'%f', // last_high
-								'%f', // last_low
-								'%f', // last_close
-								'%d', // last_volume
-								'%f', // last_change
-								'%f', // last_changep
-								'%s', // range
-							)
+							$format
 						);
 					}
+
+					// Catch errors
+					error_log( print_r( $wpdb->last_query, TRUE ) );
 
 					// Is failed updated data in DB
 					if ( false === $ret ) {
@@ -262,7 +253,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					}
 
 					// After success update in database, report in log
-					$msg = "Stock data for symbol {$symbol_to_fetch} has been updated in database.";
+					$msg = "Data for symbol {$symbol_to_fetch} has been updated in database.";
 					error_log( $msg );
 					// Set last fetched symbol
 					update_option( 'stockticker_av_last', $symbol_to_fetch );
@@ -303,8 +294,16 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					// self::log( 'Fetching data from AV: ' . $feed_url );
 					$response = wp_remote_get( $feed_url, $wparg );
-					error_log('Sending to db put');
-					update_ticker_db(json_decode($response['body']));
+					
+					if (is_wp_error($response)) {
+						error_log('Failed to pull coinmarketcap feed');
+						error_log(print_r($response));
+
+					} else {
+						error_log('Sending to db put');
+						update_ticker_db(json_decode($response['body']));
+					
+					}
 				}	
 
 
