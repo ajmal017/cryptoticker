@@ -56,30 +56,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 		public $plugin_url;
 
 		public static $exchanges = array(
-			'ASX'    => 'Australian Securities Exchange',
-			'BOM'    => 'Bombay Stock Exchange',
-			'BIT'    => 'Borsa Italiana Milan Stock Exchange',
-			'TSE'    => 'Canadian/Toronto Securities Exchange',
-			'FRA'    => 'Deutsche Boerse Frankfurt Stock Exchange',
-			'ETR'    => 'Deutsche Boerse Frankfurt Stock Exchange',
-			'AMS'    => 'Euronext Amsterdam',
-			'EBR'    => 'Euronext Brussels',
-			'ELI'    => 'Euronext Lisbon',
-			'EPA'    => 'Euronext Paris',
-			'LON'    => 'London Stock Exchange',
-			'MCX'    => 'Moscow Exchange',
-			'NASDAQ' => 'NASDAQ Exchange',
-			'CPH'    => 'NASDAQ OMX Copenhagen',
-			'HEL'    => 'NASDAQ OMX Helsinki',
-			'ICE'    => 'NASDAQ OMX Iceland',
-			'STO'    => 'NASDAQ OMX Stockholm',
-			'NSE'    => 'National Stock Exchange of India',
-			'NYSE'   => 'New York Stock Exchange',
-			'SGX'    => 'Singapore Exchange',
-			'SHA'    => 'Shanghai Stock Exchange',
-			'SHE'    => 'Shenzhen Stock Exchange',
-			'TPE'    => 'Taiwan Stock Exchange',
-			'TYO'    => 'Tokyo Stock Exchange',
+			'CMC'    => 'CoinMarketCap.com',
 		);
 
 		/**
@@ -421,7 +398,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				'minus'           => '#D8442F',
 				'plus'            => '#009D59',
 				'cache_timeout'   => '180', // 3 minutes
-				'template'        => '%company% %price% %change% %changep%',
+				'template_title'  => '%company% %price% %change% %changep%',
+				'template_price'  => '%price% ( %changep% )',
 				'error_message'   => 'Unfortunately, we could not get stock quotes this time.',
 				'legend'          => "AAPL;Apple Inc.\nFB;Facebook, Inc.\nCSCO;Cisco Systems, Inc.\nGOOG;Google Inc.\nINTC;Intel Corporation\nLNKD;LinkedIn Corporation\nMSFT;Microsoft Corporation\nTWTR;Twitter, Inc.\nBABA;Alibaba Group Holding Limited\nIBM;International Business Machines Corporationn\n.DJI;Dow Jones Industrial Average\nEURGBP;Euro (€) ⇨ British Pound Sterling (£)",
 				'style'           => 'font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:normal;font-size:14px;',
@@ -530,6 +508,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					array(),
 					self::VER
 				);
+
 				wp_register_script(
 					'stock-ticker-admin',
 					$this->plugin_url . ( WP_DEBUG ? 'assets/js/jquery.admin.js' : 'assets/js/jquery.admin.min.js' ),
@@ -563,6 +542,12 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 			wp_enqueue_style(
 				'stock-ticker',
 				$this->plugin_url . 'assets/css/stock-ticker.css',
+				array(),
+				self::VER
+			);
+			wp_enqueue_style(
+				'cryptocoins',
+				$this->plugin_url . 'assets/css/cryptocoins.css',
 				array(),
 				self::VER
 			);
@@ -813,12 +798,18 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$prefix = '';
 				if ( $q_change < 0 ) {
 					$chclass = 'minus';
+					$q_changedir = "caret-down";
+					$q_changecolor = "red";
 				} elseif ( $q_change > 0 ) {
 					$chclass = 'plus';
 					$prefix = '+';
+					$q_changedir = "caret-up";
+					$q_changecolor = "green";
 				} else {
 					$chclass = 'zero';
 					$q_change = '0.00';
+					$q_changedir = "balance-scale";
+
 				}
 
 				// Get custom company name if exists.
@@ -836,8 +827,6 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				} else {
 					$company_show = $q_symbol;
 				}
-				// Open stock quote item.
-				$q .= "<li class=\"{$chclass}\">";
 
 				// Format numbers.
 				$q_price   = number_format( $q_price, $decimals, $dec_point, $thousands_sep );
@@ -851,20 +840,38 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$quote_title = $q_name . ' (Last trade ' . $q_ltrade . ')';
 				}
 
-				// Value template.
-				$template = $defaults['template'];
-				$template = str_replace( '%company%', $company_show, $template );
-				$template = str_replace( '%symbol%', $q_symbol, $template );
-				$template = str_replace( '%exch_symbol%', $url_query, $template );
-				$template = str_replace( '%price%', $q_price, $template );
-				$template = str_replace( '%change%', $q_change, $template );
-				$template = str_replace( '%changep%', "{$q_changep}%", $template );
-				$template = str_replace( '%volume%', $q_volume, $template );
+				// set up image icon 
+				// supported by https://labs.allienworks.net/icons/cryptocoins/ (Nice work - thanks!)
+				$q_img = " <i class='cc " . $q_symbol . "'></i> ";
 
-				$q .= '<span class="sqitem" title="' . $quote_title . '">' . $template . '</span>';
+				// Set price format - Needs to be added to settings
+				$price_format = "$" . $q_price; // USD
 
-				// Close stock quote item.
-				$q .= '</li>';
+				// New logic to handle title / price separation
+
+				// Assemble title
+				$q_title = $defaults['template_title'];
+				$q_title = str_replace( '%icon%', $q_img, $q_title );
+				$q_title = str_replace( '%company%', $company_show, $q_title );
+				$q_title = str_replace( '%symbol%', $q_symbol, $q_title );
+				
+				$q_title = str_replace( '%price%', $price_format, $q_title );
+				
+				// Html prep
+				$q_title =  '<li><span class="sqitem" title="title_' . $symbol . '">'  . $q_title;
+
+				// Set changep format
+				$q_change_p_format = " ( <i style=\"color:{$q_changecolor}\" class=\"fa fa-{$q_changedir}\"><b> {$q_changep}% </b></i> )";
+
+				// Assemble price
+				$q_price = $defaults['template_price'];
+				$q_price = str_replace( '%price%', $price_format, $q_price );
+				$q_price = str_replace( '%change%', $q_change, $q_price );
+				$q_price = str_replace( '%changep%', $q_change_p_format, $q_price );
+				$q_price = str_replace( '%volume%', $q_volume, $q_price );
+
+				// add stock quote item.
+				$q .= $q_title . $q_price . '</span></li>';
 
 			} // END foreach ( $symbols_arr as $symbol ) {
 

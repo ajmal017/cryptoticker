@@ -308,6 +308,46 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'value' => $this->defaults['template'],
 				)
 			);
+			add_settings_field(
+				$this->option_name . 'template_title',
+				__( 'Display Format (Title)', 'wpaust' ),
+				array( &$this, 'settings_field_textarea' ),
+				$wpau_stockticker->plugin_slug,
+				'wpaust_advanced',
+				array(
+					'field'       => $this->option_name . '[template_title]',
+					'description' => sprintf(
+						__( 'Custom template for item title in ticker display. You can use macro keywords %1$s and %2$s mixed with HTML tags %3$s and/or %4$s.', 'wpaust' ),
+						'%icon%, %company%',
+						'%price%',
+						'&lt;span&gt;, &lt;em&gt;',
+						'&lt;strong&gt;'
+					),
+					'class' => 'widefat',
+					'rows'  => 2,
+					'value' => $this->defaults['template_title'],
+				)
+			);
+			add_settings_field(
+				$this->option_name . 'template_price',
+				__( 'Display Format ( Price )', 'wpaust' ),
+				array( &$this, 'settings_field_textarea' ),
+				$wpau_stockticker->plugin_slug,
+				'wpaust_advanced',
+				array(
+					'field'       => $this->option_name . '[template_price]',
+					'description' => sprintf(
+						__( 'Custom template for item price in ticker display. You can use macro keys %1$s and %2$s (Add "-, _, (, ), [, ], |, <, >" as desired for formatting) mixed with HTML tags %3$s and/or %4$s.', 'wpaust' ),
+						'%price%, %volume%, %change%',
+						'%changep%',
+						'&lt;span&gt;, &lt;em&gt;',
+						'&lt;strong&gt;'
+					),
+					'class' => 'widefat',
+					'rows'  => 2,
+					'value' => $this->defaults['template_price'],
+				)
+			);
 			// Custom name.
 			add_settings_field(
 				$this->option_name . 'legend',

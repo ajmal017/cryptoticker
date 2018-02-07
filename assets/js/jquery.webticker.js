@@ -234,35 +234,6 @@
 				$strip.css('list-style-type', 'none');
 				$strip.css('margin', '0');
 				$strip.css('padding', '0');
-				/*
-				if ((settings.maskleft !== '') && (settings.maskright !== '')){
-					var backgroundimage='url("'+settings.maskleft+'")';
-					$tickercontainer.find('.tickeroverlay-left').css('background-image',backgroundimage);
-					$tickercontainer.find('.tickeroverlay-left').css('display','block');
-					$tickercontainer.find('.tickeroverlay-left').css('pointer-events','none');
-					$tickercontainer.find('.tickeroverlay-left').css('position','absolute');
-					$tickercontainer.find('.tickeroverlay-left').css('z-index','30');
-					$tickercontainer.find('.tickeroverlay-left').css('height',settings.height);
-					$tickercontainer.find('.tickeroverlay-left').css('width',settings.maskwidth);
-					$tickercontainer.find('.tickeroverlay-left').css('top','0');
-					$tickercontainer.find('.tickeroverlay-left').css('left','-2px');
-
-					backgroundimage='url("'+settings.maskright+'")';
-					$tickercontainer.find('.tickeroverlay-right').css('background-image',backgroundimage);
-					$tickercontainer.find('.tickeroverlay-right').css('display','block');
-					$tickercontainer.find('.tickeroverlay-right').css('pointer-events','none');
-					$tickercontainer.find('.tickeroverlay-right').css('position','absolute');
-					$tickercontainer.find('.tickeroverlay-right').css('z-index','30');
-					$tickercontainer.find('.tickeroverlay-right').css('height',settings.height);
-					$tickercontainer.find('.tickeroverlay-right').css('width',settings.maskwidth);
-					$tickercontainer.find('.tickeroverlay-right').css('top','0');
-					$tickercontainer.find('.tickeroverlay-right').css('right','-2px');
-				}
-				else{
-					$tickercontainer.find('.tickeroverlay-left').css('display','none');
-					$tickercontainer.find('.tickeroverlay-right').css('display','none');
-				}
-				/**/
 
 				//adding the 'last' class will help for future duplicate functions
 				$strip.children('li').last().addClass('last'); 
