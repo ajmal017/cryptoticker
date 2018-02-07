@@ -3,10 +3,10 @@
  * Stock Ticker General Settings page template
  *
  * @category Template
- * @package Stock Ticker
- * @author Aleksandar Urosevic
+ * @package Crypto Ticker
+ * @author Alexander Morris
  * @license https://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link https://urosevic.net
+ * @link https://blockchain.wtf
  */
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,11 +30,8 @@ global $wpau_stockticker;
 		</div><!-- .content_cell -->
 
 		<div class="sidebar_container">
-			<a href="https://urosevic.net/wordpress/donate/?donate_for=stock-ticker" class="aust-button paypal_donate" target="_blank">Donate</a>
+			<b>Published by Alex Morris on behalf of <a href="https://blockchain.wtf" target="_blank">Blockchain.wtf</a>
 			<br />
-			<a href="https://wordpress.org/plugins/stock-ticker/faq/" class="aust-button" target="_blank">FAQ</a>
-			<br />
-			<a href="https://wordpress.org/support/plugin/stock-ticker" class="aust-button" target="_blank">Community Support</a>
 			<h2><?php esc_attr_e( 'Disclaimer', 'wpaust' ); ?></h2>
 			<p class="description"><?php
 				printf(

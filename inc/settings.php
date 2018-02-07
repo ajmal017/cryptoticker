@@ -3,10 +3,10 @@
  * Stock Ticker General Settings
  *
  * @category Wpau_Stock_Ticker_Settings
- * @package Stock Ticker
- * @author Aleksandar Urosevic
+ * @package Crypto Ticker
+ * @author Alexander Morris
  * @license https://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link https://urosevic.net
+ * @link https://blockchain.wtf
  */
 
 if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
@@ -15,10 +15,10 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 	 * Wpau_Stock_Ticker_Settings Class provide general plugins settings page
 	 *
 	 * @category Class
-	 * @package Stock Ticker
-	 * @author Aleksandar Urosevic
+	 * @package Crypto Ticker
+	 * @author Alexander Morris
 	 * @license https://www.gnu.org/copyleft/gpl.html GNU General Public License
-	 * @link https://urosevic.net
+	 * @link https://blockchain.wtf
 	 */
 	class Wpau_Stock_Ticker_Settings {
 		/**
@@ -50,32 +50,6 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 				$wpau_stockticker->plugin_slug
 			);
 
-			// // Add setting's fields.
-			// add_settings_field(
-			// 	$this->option_name . 'avapikey',
-			// 	__( 'AlphaVantage.co API Key', 'wpaust' ),
-			// 	array( &$this, 'settings_field_input_password' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_general',
-			// 	array(
-			// 		'field'       => $this->option_name . '[avapikey]',
-			// 		'description' => sprintf(
-			// 			wp_kses(
-			// 				__( 'To get stock data we use AlphaVantage.co API. If you do not have it already, <a href="%1$s" target="_blank">%2$s</a> and enter it here.', 'wpaust' ),
-			// 				array(
-			// 					'a' => array(
-			// 						'href' => array(),
-			// 						'target' => array( '_blank' ),
-			// 					),
-			// 				)
-			// 			),
-			// 			esc_url( 'https://www.alphavantage.co/support/#api-key' ),
-			// 			__( 'Claim your free API Key', 'wpaust' )
-			// 		),
-			// 		'class'       => 'widefat',
-			// 		'value'       => $this->defaults['avapikey'],
-			// 	)
-			// );
 			add_settings_field(
 				$this->option_name . 'all_symbols',
 				__( 'All Token Symbols', 'wpaust' ),
@@ -89,44 +63,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'value'       => $this->defaults['all_symbols'],
 				)
 			);
-			// add_settings_field(
-			// 	$this->option_name . 'loading_message',
-			// 	__( 'Loading Message', 'wpaust' ),
-			// 	array( &$this, 'settings_field_input_text' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_general',
-			// 	array(
-			// 		'field'       => $this->option_name . '[loading_message]',
-			// 		'description' => __( 'Customize message displayed to visitor until plugin load stock data through AJAX.', 'wpaust' ),
-			// 		'class'       => 'widefat',
-			// 		'value'       => $this->defaults['loading_message'],
-			// 	)
-			// );
-			// Default error message.
-			// add_settings_field(
-			// 	$this->option_name . 'error_message',
-			// 	__( 'Error Message', 'wpaust' ),
-			// 	array( &$this, 'settings_field_input_text' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_general',
-			// 	array(
-			// 		'field'       => $this->option_name . '[error_message]',
-			// 		'description' => __(
-			// 			'When we do not have pre-fetched stock data for symbols requested in block from AlphaVantage.co, display this message in ticker',
-			// 			'wpaust'
-			// 		),
-			// 		'class'       => 'widefat',
-			// 		'value'       => $this->defaults['error_message'],
-			// 	)
-			// );
-			// // Force fetch stock
-			// add_settings_field(
-			// 	$this->option_name . 'force_fetch',
-			// 	__( 'Force data fetch', 'wpaust' ),
-			// 	array( &$this, 'settings_js_forcedatafetch' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_general'
-			// );
+	
 
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(
@@ -307,6 +244,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'value' => $this->defaults['template_title'],
 				)
 			);
+
 			add_settings_field(
 				$this->option_name . 'template_price',
 				__( 'Display Format ( Price )', 'wpaust' ),
@@ -345,40 +283,6 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					),
 				)
 			);
-			// // Caching timeout field.
-			// add_settings_field(
-			// 	$this->option_name . 'cache_timeout',
-			// 	__( 'Cache Timeout', 'wpaust' ),
-			// 	array( &$this, 'settings_field_input_number' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_advanced',
-			// 	array(
-			// 		'field'       => $this->option_name . '[cache_timeout]',
-			// 		'description' => __( 'Define timeout before next round of fetching symbol data start, in seconds', 'wpaust' ),
-			// 		'class'       => 'num small-text',
-			// 		'value'       => isset( $this->defaults['cache_timeout'] ) ? $this->defaults['cache_timeout'] : 180,
-			// 		'min'         => 0,
-			// 		'max'         => DAY_IN_SECONDS,
-			// 		'step'        => 5,
-			// 	)
-			// );
-			// // Fetch timeout field.
-			// add_settings_field(
-			// 	$this->option_name . 'timeout',
-			// 	__( 'Fetch Timeout', 'wpaust' ),
-			// 	array( &$this, 'settings_field_input_number' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_advanced',
-			// 	array(
-			// 		'field'       => $this->option_name . '[timeout]',
-			// 		'description' => __( 'Define timeout to fetch quote feed before give up and display error message, in seconds (default is 2)', 'wpaust' ),
-			// 		'class'       => 'num small-text',
-			// 		'value'       => isset( $this->defaults['timeout'] ) ? $this->defaults['timeout'] : 2,
-			// 		'min'         => 1,
-			// 		'max'         => 60,
-			// 		'step'        => 1,
-			// 	)
-			// );
 
 			// Default styling.
 			add_settings_field(
@@ -395,39 +299,6 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'description' => __( 'Define custom CSS style for ticker item (font family, size, weight)', 'wpaust' ),
 				)
 			);
-
-			// Refresh checkbox.
-			add_settings_field(
-				$this->option_name . 'refresh',
-				__( 'Auto Refresh', 'wpaust' ),
-				array( &$this, 'settings_field_checkbox' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_advanced',
-				array(
-					'field'       => $this->option_name . '[refresh]',
-					'description' => __( 'Enable this option to auto refresh all stock tickers on page w/o requirement to reload page manually.', 'wpaust' ),
-					'class'       => 'checkbox',
-					'value'       => isset( $this->defaults['refresh'] ) ? $this->defaults['refresh'] : false,
-				) // args
-			);
-
-			// // Refresh timeout field.
-			// add_settings_field(
-			// 	$this->option_name . 'refresh_timeout',
-			// 	__( 'Refresh Timeout', 'wpaust' ),
-			// 	array( &$this, 'settings_field_input_number' ),
-			// 	$wpau_stockticker->plugin_slug,
-			// 	'wpaust_advanced',
-			// 	array(
-			// 		'field'       => $this->option_name . '[refresh_timeout]',
-			// 		'description' => __( 'Define auto refresh timeout, in seconds', 'wpaust' ),
-			// 		'class'       => 'num small-text',
-			// 		'value'       => isset( $this->defaults['refresh_timeout'] ) ? $this->defaults['refresh_timeout'] : 2,
-			// 		'min'         => 0,
-			// 		'max'         => HOUR_IN_SECONDS,
-			// 		'step'        => 5,
-			// 	)
-			// );
 
 			// Global enqueue assets.
 			add_settings_field(
@@ -467,7 +338,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 		public function settings_general_section_description() {
 			// Think of this as help text for the section.
 			esc_attr_e(
-				'Predefine general settings for Stock Ticker. Here you can set API key and symbols used on whole website (in all ticker).',
+				'Predefine general settings for CryptoTicker. Here you can set the symbols and format to use in the ticker.',
 				'wpaust'
 			);
 		}
@@ -478,7 +349,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 		public function settings_default_section_description() {
 			// Think of this as help text for the section.
 			esc_attr_e(
-				'Predefine default settings for Stock Ticker. Here you can set stock symbols and how you wish to present companies in ticker.',
+				'Predefine default settings for CryptoTicker. Here you can set stock symbols and how you wish to present currencies in ticker.',
 				'wpaust'
 			);
 		}

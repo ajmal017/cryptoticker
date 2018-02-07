@@ -3,20 +3,20 @@
  * Stock Ticker Widget
  *
  * @category Wpau_Stock_Ticker_Widget
- * @package Stock Ticker
- * @author Aleksandar Urosevic
- * @license http://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link https://urosevic.net
+ * @package Crypto Ticker
+ * @author Alexander Morris
+ * @license https://www.gnu.org/copyleft/gpl.html GNU General Public License
+ * @link https://blockchain.wtf
  */
 
 /**
  * Wpau_Stock_Ticker_Widget Class provide widget settings and output for Stock Ticker plugin
  *
  * @category Class
- * @package Stock Ticker
- * @author Aleksandar Urosevic
+ * @package Crypto Ticker
+ * @author Alexander Morris
  * @license https://www.gnu.org/copyleft/gpl.html GNU General Public License
- * @link https://urosevic.net
+ * @link https://blockchain.wtf
  */
 class Wpau_Stock_Ticker_Widget extends WP_Widget {
 	/**

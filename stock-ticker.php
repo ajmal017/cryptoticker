@@ -1,17 +1,20 @@
 <?php
 /**
 Plugin Name: Stock Ticker
-Plugin URI: https://urosevic.net/wordpress/plugins/stock-ticker/
+Plugin URI: https://github.com/alexshares/cryptoticker.git
 Description: Easy add customizable moving or static ticker tapes with stock information for custom stock symbols.
-Version: 3.0.3
-Author: Aleksandar Urosevic
-Author URI: https://urosevic.net
+Version: 1.0.0
+Author: Alexander Morris
+Author URI: https://github.com/alexshares/
 License: GNU GPL3
  * @package Stock Ticker
  */
 
 /**
-Copyright 2014-2017 Aleksandar Urosevic (urke.kg@gmail.com)
+This plugin was forked from the work of Aleksandar Urosevic (urke.kg@gmail.com) 
+Available at: https://urosevic.net/wordpress/plugins/stock-ticker/
+
+Copyright 2018 Alexander Morris (alex@blockchain.wtf)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -108,7 +111,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				// Schedule an action if it's not already scheduled
 				if ( ! wp_next_scheduled( 'isa_update_ticker' ) ) {
 				    wp_schedule_event( time(), 'run_ticker_update', 'isa_update_ticker' );
-				    error_log('job scheduled');
+				    // error_log('job scheduled');
 				}
 
 				// Hook into that action to the isa.
@@ -118,17 +121,17 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					global $wpdb;
 					
-					error_log(print_r($item, TRUE));
+					// error_log(print_r($item, TRUE));
 
 					$symbol_to_fetch = $item->symbol;
 					$last_volume = $item->{'24h_volume_usd'};
 					$changep = $item->{'percent_change_24h'};
 					$table_name = $wpdb->prefix . 'stock_ticker_data';
-					error_log('table: ' . $table_name);
+					// error_log('table: ' . $table_name);
 
-					error_log($last_volume);
+					// error_log($last_volume);
 
-					error_log($symbol_to_fetch);
+					// error_log($symbol_to_fetch);
 
 					$symbol_exists = $wpdb->get_var( $wpdb->prepare(
 						"
@@ -142,10 +145,10 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					// $new_timestamp = date("Y-m-d H:m:s", $item->last_updated);
 					$new_date = new DateTime();
 					$new_timestamp = date("Y-m-d H:i:s", $new_date->getTimestamp());
-					error_log('input date:');
-					error_log($item->updated);
-					error_log('new date:');
-					error_log($new_timestamp);
+					// error_log('input date:');
+					// error_log($item->updated);
+					// error_log('new date:');
+					// error_log($new_timestamp);
 
 					$format = 							array(
 								'%s', // symbol
@@ -176,12 +179,12 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 								'changep'        => $changep,
 								'range'          => $item->symbol,
 							);
-					error_log('maybe sending payload for ' . $payload['symbol']);
-					error_log(print_r($payload, TRUE));
+					// error_log('maybe sending payload for ' . $payload['symbol']);
+					// error_log(print_r($payload, TRUE));
 
 					if ( ! empty( $symbol_exists ) ) {
 
-						error_log('sending payload as update');
+						// error_log('sending payload as update');
 						// UPDATE
 						$ret = $wpdb->update(
 							// table
@@ -201,7 +204,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 						);
 					} else {
 
-						error_log('sending payload as insert');
+						// error_log('sending payload as insert');
 						// INSERT
 						$ret = $wpdb->insert(
 							// table
@@ -214,12 +217,12 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					}
 
 					// Catch errors
-					error_log( print_r( $wpdb->last_query, TRUE ) );
+					// error_log( print_r( $wpdb->last_query, TRUE ) );
 
 					// Is failed updated data in DB
 					if ( false === $ret ) {
 						$msg = "Stock Ticker Fatal Error: Failed to save stock data for {$symbol_to_fetch} to database!";
-						error_log( $msg );
+						// error_log( $msg );
 						// Release processing for next run
 						// self::unlock_fetch();
 						// Return failed status
@@ -231,7 +234,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					// After success update in database, report in log
 					$msg = "Data for symbol {$symbol_to_fetch} has been updated in database.";
-					error_log( $msg );
+					// error_log( $msg );
 					// Set last fetched symbol
 					update_option( 'stockticker_av_last', $symbol_to_fetch );
 					// Release processing for next run
@@ -245,13 +248,13 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 				function update_ticker_db($data) {
 					// Push the new ticker data to the DB.
-					error_log(count($data));
+					// error_log(count($data));
 
 					// Cycle through the array and json_decode each element.
 					$limit = count($data) - 4;
-					error_log('Updating ' . $limit . " items");
+					// error_log('Updating ' . $limit . " items");
 					for ( $i = 0; $i < $limit; $i++){
-						error_log('pushed ' . $data[$i]->symbol . 'to db');
+						// error_log('pushed ' . $data[$i]->symbol . 'to db');
 
 						push_item($data[$i]);
 					}
@@ -273,11 +276,11 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$response = wp_remote_get( $feed_url, $wparg );
 					
 					if (is_wp_error($response)) {
-						error_log('Failed to pull coinmarketcap feed');
-						error_log(print_r($response));
+						// error_log('Failed to pull coinmarketcap feed');
+						// error_log(print_r($response));
 
 					} else {
-						error_log('Sending to db put');
+						// error_log('Sending to db put');
 						update_ticker_db(json_decode($response['body']));
 					
 					}
@@ -470,11 +473,11 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$links,
 					array(
 						sprintf(
-							'<a href="https://wordpress.org/support/plugin/stock-ticker" target="_blank">%s</a>',
+							'<a href="https://blockchain.wtf" target="_blank">%s</a>',
 							__( 'Support' )
 						),
 						sprintf(
-							'<a href="https://urosevic.net/wordpress/donate/?donate_for=stock-ticker" target="_blank">%s</a>',
+							'<a href="https://blockchain.wtf" target="_blank">%s</a>',
 							__( 'Donate' )
 						),
 					)
@@ -1419,7 +1422,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 			if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) {
 				$log_file = trailingslashit( WP_CONTENT_DIR ) . 'stockticker.log';
 				$date = date( 'c' );
-				error_log( "{$date}: {$str}\n", 3, $log_file );
+				// error_log( "{$date}: {$str}\n", 3, $log_file );
 			}
 		}
 	} // END class Wpau_Stock_Ticker
