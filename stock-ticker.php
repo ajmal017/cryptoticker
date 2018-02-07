@@ -122,7 +122,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 					$symbol_to_fetch = $item->symbol;
 					$last_volume = $item->{'24h_volume_usd'};
-					$changep = $item->{'percent_change_1h'};
+					$changep = $item->{'percent_change_24h'};
 					$table_name = $wpdb->prefix . 'stock_ticker_data';
 					error_log('table: ' . $table_name);
 

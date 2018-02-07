@@ -120,13 +120,13 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			// 	)
 			// );
 			// // Force fetch stock
-			add_settings_field(
-				$this->option_name . 'force_fetch',
-				__( 'Force data fetch', 'wpaust' ),
-				array( &$this, 'settings_js_forcedatafetch' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_general'
-			);
+			// add_settings_field(
+			// 	$this->option_name . 'force_fetch',
+			// 	__( 'Force data fetch', 'wpaust' ),
+			// 	array( &$this, 'settings_js_forcedatafetch' ),
+			// 	$wpau_stockticker->plugin_slug,
+			// 	'wpaust_general'
+			// );
 
 			// --- Register setting General so $_POST handling is done ---
 			register_setting(
@@ -285,27 +285,6 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'min'         => 10,
 					'max'         => 200,
 					'step'        => 1,
-				)
-			);
-			// Default ticker item template.
-			add_settings_field(
-				$this->option_name . 'template',
-				__( 'Item Template', 'wpaust' ),
-				array( &$this, 'settings_field_textarea' ),
-				$wpau_stockticker->plugin_slug,
-				'wpaust_advanced',
-				array(
-					'field'       => $this->option_name . '[template]',
-					'description' => sprintf(
-						__( 'Custom template for item. You can use macro keywords %1$s and %2$s mixed with HTML tags %3$s and/or %4$s.', 'wpaust' ),
-						'%exch_symbol%, %symbol%, %company%, %price%, %volume%, %change%',
-						'%changep%',
-						'&lt;span&gt;, &lt;em&gt;',
-						'&lt;strong&gt;'
-					),
-					'class' => 'widefat',
-					'rows'  => 2,
-					'value' => $this->defaults['template'],
 				)
 			);
 			add_settings_field(
