@@ -3,6 +3,7 @@ Initial public release - Forked from
 
 === Stock Ticker ===
 Contributors: urkekg
+Available at: https://urosevic.net/wordpress/plugins/stock-ticker/
 Donate link: https://urosevic.net/wordpress/donate/?donate_for=stock-ticker
 Tags: widget, stock, ticker, securities, quote, financial, finance, exchange, bank, market, trading, investment, stock symbols, stock quotes, forex, nasdaq, nyse, wall street
 Requires at least: 4.0.0
