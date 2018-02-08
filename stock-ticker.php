@@ -93,7 +93,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 			// Initialize default settings
 			$this->defaults = self::defaults();
-
+			$defaults = $this->defaults;
 
 
 			// Crypto Ticker Mod
@@ -118,6 +118,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				add_action( 'isa_update_ticker', 'fetch_ticker_feed' );
 
 				function push_item($item) {
+					
 
 					global $wpdb;
 					
@@ -413,7 +414,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				'currencychoice'  => 'usd',
 				'cache_timeout'   => '180', // 3 minutes
 				'template_title'  => '%company% %price% %change% %changep%',
-				'template_price'  => '%price% ( %changep% )',
+				'template_price'  => '%price% %changep%',
 				'error_message'   => 'Unfortunately, we could not get stock quotes this time.',
 				'legend'          => "AAPL;Apple Inc.\nFB;Facebook, Inc.\nCSCO;Cisco Systems, Inc.\nGOOG;Google Inc.\nINTC;Intel Corporation\nLNKD;LinkedIn Corporation\nMSFT;Microsoft Corporation\nTWTR;Twitter, Inc.\nBABA;Alibaba Group Holding Limited\nIBM;International Business Machines Corporationn\n.DJI;Dow Jones Industrial Average\nEURGBP;Euro (€) ⇨ British Pound Sterling (£)",
 				'style'           => 'font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:normal;font-size:14px;',
@@ -865,21 +866,21 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				// Set price format - Needs to be added to settings
 				$currencyformat = $defaults['currencychoice'];
 				if( 'usd' === $currencyformat ) {
-					$price_format = " $ " . $q_price; // USD
+					$price_format = " $" . $q_price; // USD
 				} else if ( 'can' === $currencyformat ) {
-					$price_format = " $ " . $q_price; // CAN
+					$price_format = " $" . $q_price; // CAN
 				} else if ( 'eur' === $currencyformat ) {
-					$price_format = " € " . $q_price; // EURO
+					$price_format = " €" . $q_price; // EURO
 				} else if ( 'aus' === $currencyformat ) {
-					$price_format = " $ " . $q_price; // AUS
+					$price_format = " $" . $q_price; // AUS
 				} else if ( 'gpb' === $currencyformat ) {
-					$price_format = " ‎£ " . $q_price; // British Pound
+					$price_format = " ‎£" . $q_price; // British Pound
 				} else if ( 'yen' === $currencyformat ) {
-					$price_format = " ¥ " . $q_price; // Chinese Yen
+					$price_format = " ¥" . $q_price; // Chinese Yen
 				} else if ( 'won' === $currencyformat ) {
-					$price_format = " ₩ " . $q_price; // SK Won
+					$price_format = " ₩" . $q_price; // SK Won
 				} else { // default to usd 
-					$price_format = " $ " . $q_price; // USD
+					$price_format = " $" . $q_price; // USD
 				}
 
 				// New logic to handle title / price separation
@@ -897,8 +898,9 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 				// Clear symbols from q_changep (direction has already been set)
 				$q_changep = str_replace( ['+','-'],['',''],$q_changep );
-				// Set changep format
-				$q_change_p_format = "<span id=\"price_change_$symbol\" style=\"color:{$q_changecolor}\"> ( <i class=\"fa fa-{$q_changedir}\"></i><strong> {$q_changep}% </strong> ) </span>";
+				
+				// Set format for change percentage display
+				$q_change_p_format = "<span id=\"price_change_$symbol\" style=\"color:{$q_changecolor}\"> <i class=\"fa fa-{$q_changedir}\"></i><strong> {$q_changep}% </strong> </span>";
 
 				// Assemble price
 				$q_price = $defaults['template_price'];
