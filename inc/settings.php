@@ -211,6 +211,31 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'value' => $this->defaults['symbolchoice'],
 				)
 			);
+
+			add_settings_field(
+				$this->option_name . 'currencychoice',
+				__( 'currencychoice', 'wpaust' ),
+				array( &$this, 'settings_field_select' ),
+				$wpau_stockticker->plugin_slug,
+				'wpaust_default',
+				array(
+					'field'       => $this->option_name . '[currencychoice]',
+					'description' => sprintf(
+						__( 'Choose the currency to display quotes in.', 'wpaust' ),
+						"'show'"
+					),
+					'items'       => array(
+						'usd'   => __( 'US Dollar', 'wpaust' ),
+						'can' => __( 'Canadian Dollar', 'wpaust' ),
+						'eur' => __( 'Euro', 'wpaust' ),
+						'aus' => __( 'Australian Dollar', 'wpaust' ),
+						'gbp' => __( 'British Pound', 'wpaust' ),
+						'yen' => __( 'Chinese Yen', 'wpaust' ),
+						'won' => __( 'South Korean Won', 'wpaust' ),
+					),
+					'value' => $this->defaults['currencychoice'],
+				)
+			);
 			// --- Register setting Default so $_POST handling is done ---
 			register_setting(
 				'wpaust_default',

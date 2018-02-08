@@ -129,6 +129,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$table_name = $wpdb->prefix . 'stock_ticker_data';
 					// error_log('table: ' . $table_name);
 
+					$currency_choice_price = "price_" . $defaults['currencychoice'];
+
 					// error_log($last_volume);
 
 					// error_log($symbol_to_fetch);
@@ -170,17 +172,17 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 								'raw'            => json_encode($item),
 								'last_refreshed' => $new_timestamp,
 								'tz'             => "US Eastern",
-								'last_open'      => $item->price_usd,
-								'last_high'      => $item->price_usd,
-								'last_low'       => $item->price_usd,
-								'last_close'     => $item->price_usd,
+								'last_open'      => $item->$currency_choice_price,
+								'last_high'      => $item->$currency_choice_price,
+								'last_low'       => $item->$currency_choice_price,
+								'last_close'     => $item->$currency_choice_price,
 								'last_volume'    => $last_volume,
-								'change'         => ( $changep * $item->price_usd ),
+								'change'         => ( $changep * $item->$currency_choice_price ),
 								'changep'        => $changep,
 								'range'          => $item->symbol,
 							);
-					// error_log('maybe sending payload for ' . $payload['symbol']);
-					// error_log(print_r($payload, TRUE));
+					error_log('maybe sending payload for ' . $payload['symbol']);
+					error_log(print_r($payload, TRUE));
 
 					if ( ! empty( $symbol_exists ) ) {
 
@@ -401,6 +403,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				'minus'           => '#D8442F',
 				'plus'            => '#009D59',
 				'symbolchoice' 	  => 'caret',
+				'currencychoice'  => 'usd',
 				'cache_timeout'   => '180', // 3 minutes
 				'template_title'  => '%company% %price% %change% %changep%',
 				'template_price'  => '%price% ( %changep% )',
@@ -853,7 +856,24 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$q_img = " <i class='cc " . $q_symbol . "'></i> ";
 
 				// Set price format - Needs to be added to settings
-				$price_format = "     $" . $q_price; // USD
+				$currencyformat = $defaults['currencychoice'];
+				if( 'usd' === $currencyformat ) {
+					$price_format = " $ " . $q_price; // USD
+				} else if ( 'can' === $currencyformat ) {
+					$price_format = " $ " . $q_price; // CAN
+				} else if ( 'eur' === $currencyformat ) {
+					$price_format = " € " . $q_price; // EURO
+				} else if ( 'aus' === $currencyformat ) {
+					$price_format = " $ " . $q_price; // AUS
+				} else if ( 'gpb' === $currencyformat ) {
+					$price_format = " ‎£ " . $q_price; // British Pound
+				} else if ( 'yen' === $currencyformat ) {
+					$price_format = " ¥ " . $q_price; // Chinese Yen
+				} else if ( 'won' === $currencyformat ) {
+					$price_format = " ₩ " . $q_price; // SK Won
+				} else { // default to usd 
+					$price_format = " $ " . $q_price; // USD
+				}
 
 				// New logic to handle title / price separation
 
