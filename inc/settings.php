@@ -102,7 +102,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 				array(
 					'field'       => $this->option_name . '[show]',
 					'description' => sprintf(
-						__( 'What to show as Company identifier by default for shortcodes if not provided shortcode parameter %s. Widget have own setting for this.', 'wpaust' ),
+						__( 'What to show as Company identifier by default for shortcodes if not provided shortcode parameter %s.', 'wpaust' ),
 						"'show'"
 					),
 					'items'       => array(
@@ -191,7 +191,26 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'value'       => $this->defaults['plus'],
 				)
 			);
-
+			add_settings_field(
+				$this->option_name . 'symbolchoice',
+				__( 'Change Direction Icon For Ticker', 'wpaust' ),
+				array( &$this, 'settings_field_select' ),
+				$wpau_stockticker->plugin_slug,
+				'wpaust_default',
+				array(
+					'field'       => $this->option_name . '[symbolchoice]',
+					'description' => sprintf(
+						__( 'Choose the icon to be used to indicate the change direction. See fontawesome.com for the actual icon images.', 'wpaust' ),
+						"'show'"
+					),
+					'items'       => array(
+						'arrow'   => __( 'fa-arrow', 'wpaust' ),
+						'caret' => __( 'fa-caret', 'wpaust' ),
+						'arrow-circle' => __( 'fa-arrow-circle', 'wpaust' ),
+					),
+					'value' => $this->defaults['symbolchoice'],
+				)
+			);
 			// --- Register setting Default so $_POST handling is done ---
 			register_setting(
 				'wpaust_default',

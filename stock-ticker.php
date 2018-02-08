@@ -400,6 +400,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				'zero'            => '#454545',
 				'minus'           => '#D8442F',
 				'plus'            => '#009D59',
+				'symbolchoice' 	  => 'caret',
 				'cache_timeout'   => '180', // 3 minutes
 				'template_title'  => '%company% %price% %change% %changep%',
 				'template_price'  => '%price% ( %changep% )',
@@ -797,21 +798,25 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					list( $q_exch, $q_symbol ) = explode( ':', $symbol );
 				}
 
+				$symbolchoice = $defaults['symbolchoice'];
+				
+
 				// Define class based on change.
 				$prefix = '';
 				if ( $q_change < 0 ) {
 					$chclass = 'minus';
-					$q_changedir = "caret-down";
-					$q_changecolor = "red";
+					$q_changedir = $symbolchoice . "-down";
+					$q_changecolor = $defaults['minus'];
 				} elseif ( $q_change > 0 ) {
 					$chclass = 'plus';
 					$prefix = '+';
-					$q_changedir = "caret-up";
-					$q_changecolor = "green";
+					$q_changedir = $symbolchoice . "-up";
+					$q_changecolor =  $defaults['plus'];
 				} else {
 					$chclass = 'zero';
 					$q_change = '0.00';
 					$q_changedir = "balance-scale";
+					$q_changecolor =  $defaults['zero'];
 
 				}
 
@@ -848,7 +853,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$q_img = " <i class='cc " . $q_symbol . "'></i> ";
 
 				// Set price format - Needs to be added to settings
-				$price_format = "$" . $q_price; // USD
+				$price_format = "     $" . $q_price; // USD
 
 				// New logic to handle title / price separation
 
@@ -861,10 +866,12 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$q_title = str_replace( '%price%', $price_format, $q_title );
 				
 				// Html prep
-				$q_title =  '<li><span class="sqitem" title="title_' . $symbol . '">'  . $q_title;
+				$q_title =  '<li><span class="sqitem" title="' . $symbol . '">'  . $q_title;
 
+				// Clear symbols from q_changep (direction has already been set)
+				$q_changep = str_replace( ['+','-'],['',''],$q_changep );
 				// Set changep format
-				$q_change_p_format = " ( <i style=\"color:{$q_changecolor}\" class=\"fa fa-{$q_changedir}\"><b> {$q_changep}% </b></i> )";
+				$q_change_p_format = "<span id=\"price_change_$symbol\" style=\"color:{$q_changecolor}\"> ( <i class=\"fa fa-{$q_changedir}\"></i><strong> {$q_changep}% </strong> ) </span>";
 
 				// Assemble price
 				$q_price = $defaults['template_price'];
