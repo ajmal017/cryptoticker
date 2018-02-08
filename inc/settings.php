@@ -214,14 +214,14 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 
 			add_settings_field(
 				$this->option_name . 'currencychoice',
-				__( 'currencychoice', 'wpaust' ),
+				__( 'Display Currency', 'wpaust' ),
 				array( &$this, 'settings_field_select' ),
 				$wpau_stockticker->plugin_slug,
 				'wpaust_default',
 				array(
 					'field'       => $this->option_name . '[currencychoice]',
 					'description' => sprintf(
-						__( 'Choose the currency to display quotes in.', 'wpaust' ),
+						__( 'Choose the currency to display quotes in. Note: This may take some time to update the db after a change.', 'wpaust' ),
 						"'show'"
 					),
 					'items'       => array(

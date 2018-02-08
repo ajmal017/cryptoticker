@@ -129,11 +129,17 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$table_name = $wpdb->prefix . 'stock_ticker_data';
 					// error_log('table: ' . $table_name);
 
-					$currency_choice_price = "price_" . $defaults['currencychoice'];
+					// $currency_choice_price = "price_" . $defaults['currencychoice'];
+					$currency_choice_price = "price_usd";
+					error_log('currencychoice');
+					error_log($default['currencychoice']);
+					error_log($currency_choice_price);
+
+					error_log($item->$currency_choice_price);
 
 					// error_log($last_volume);
 
-					// error_log($symbol_to_fetch);
+					error_log($symbol_to_fetch);
 
 					$symbol_exists = $wpdb->get_var( $wpdb->prepare(
 						"
@@ -171,7 +177,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 								'symbol'         => $item->symbol,
 								'raw'            => json_encode($item),
 								'last_refreshed' => $new_timestamp,
-								'tz'             => "US Eastern",
+								'tz'             => $defaults['currencychoice'],
 								'last_open'      => $item->$currency_choice_price,
 								'last_high'      => $item->$currency_choice_price,
 								'last_low'       => $item->$currency_choice_price,
@@ -181,6 +187,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 								'changep'        => $changep,
 								'range'          => $item->symbol,
 							);
+
 					error_log('maybe sending payload for ' . $payload['symbol']);
 					error_log(print_r($payload, TRUE));
 
