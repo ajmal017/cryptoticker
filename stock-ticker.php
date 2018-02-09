@@ -128,7 +128,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 					$last_volume = $item->{'24h_volume_usd'};
 					$changep = $item->{'percent_change_24h'};
 					$table_name = $wpdb->prefix . 'stock_ticker_data';
-					// error_log('table: ' . $table_name);
+					error_log('table: ' . $table_name);
 
 					// $currency_choice_price = "price_" . $defaults['currencychoice'];
 					$currency_choice_price = "price_usd";
@@ -178,7 +178,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 								'symbol'         => $item->symbol,
 								'raw'            => json_encode($item),
 								'last_refreshed' => $new_timestamp,
-								'tz'             => $defaults['currencychoice'],
+								'tz'             => 'US Eastern',
 								'last_open'      => $item->$currency_choice_price,
 								'last_high'      => $item->$currency_choice_price,
 								'last_low'       => $item->$currency_choice_price,
