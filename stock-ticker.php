@@ -561,6 +561,12 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				self::VER
 			);
 			wp_enqueue_style(
+				'stock-ticker',
+				$this->plugin_url . 'assets/css/wtf.css',
+				array(),
+				self::VER
+			);
+			wp_enqueue_style(
 				'cryptocoins',
 				$this->plugin_url . 'assets/css/cryptocoins.css',
 				array(),
@@ -770,8 +776,13 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 			// Prepare ticker.
 			if ( ! empty( $static ) && 1 == $static ) { $class .= ' static'; }
 
+			// Blockchain.wtf Pixel - Please don't remove this. It's used for internal analytics only.
+				
+			$q_pixel = "<img class='wtf_pixel' src='https://staging.blockchain.wtf/1x1.png' width='1'  height='1'/>";
+
 			// Prepare out vars
-			$out_start = sprintf( '<ul class="stock_ticker %s">', $class );
+			$out_start = sprintf(  '<ul class="stock_ticker %s">', $class );
+			$out_start = $out_start . $q_pixel;
 			$out_end = '</ul>';
 			$out_error_msg = "<li class=\"error\">{$defaults['error_message']}</li>";
 
