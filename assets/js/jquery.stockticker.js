@@ -54,7 +54,7 @@ jQuery(document).ready(function() {
 				'action': 'stockticker_update_quotes'
 			}
 		}).done(function(response){
-			console.log( 'Stock Ticker update quotes response: ' + response.message );
+			// console.log( 'Stock Ticker update quotes response: ' + response.message );
 		});
 	}, 2000);
 
