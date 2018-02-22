@@ -1,13 +1,13 @@
 <?php
 /**
-Plugin Name: Stock Ticker
+Plugin Name: Crypto Ticker
 Plugin URI: https://github.com/alexshares/cryptoticker.git
-Description: Easy add customizable moving or static ticker tapes with stock information for custom stock symbols.
+Description: Easy add customizable moving or static ticker tapes with cryptocurrency price information for a chosen list of symbols.
 Version: 1.0.0
 Author: Alexander Morris
 Author URI: https://github.com/alexshares/
 License: GNU GPL3
- * @package Stock Ticker
+ * @package Crypto Ticker
  */
 
 /**
@@ -404,27 +404,28 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 		function init_options() {
 
 			$init = array(
-				'all_symbols'     => 'AAPL,MSFT,INTC',
-				'symbols'         => 'AAPL,MSFT,INTC',
+				'all_symbols'     => 'BTC,ETH,XRP,BCH,ADA,XLM,NEO,LTC,EOS,XEM,MIOTA,DASH,XMR,TRX,LSK,VEN,QTUM,ETC,USDT,XRB,ICX,PPT,BTG,OMG,ZEC,STEEM,BTS,STRAT,BNB,BCN,SC,XVG,MKR,ZRX,VERI,DGD,WTC,REP,WAVES,KCS,SNT,RHOC,AE,DCR,DOGE,ARDR,HSR,GAS,KMD,KNC,ZIL,BAT,DRGN,LRC,ARK,DGB,ELF,ETN,IOST,QASH,PIVX,NAS,ZCL,PLR,BTM,GBYTE,GNT,DCN,CNX,CND,ETHOS,FUN,R,AION,SALT,SYS,FCT,GXS,BTX,POWR,DENT,AGI,XZC,SMART,NXT,IGNIS,REQ,MAID,KIN,RDD,NXS,ENG,BNT,MONA,PAY,ICN,PART,GNO,WAX,NEBL',
+				'symbols'         => 'BTC,ETH,XRP,BCH,ADA,XLM,NEO,LTC,EOS,XEM,MIOTA,DASH,XMR,TRX,LSK,VEN,QTUM,ETC,USDT,XRB,ICX,PPT,BTG,OMG,ZEC,STEEM,BTS,STRAT,BNB,BCN,SC,XVG,MKR,ZRX,VERI,DGD,WTC,REP,WAVES,KCS,SNT,RHOC,AE,DCR,DOGE,ARDR,HSR,GAS,KMD,KNC,ZIL,BAT,DRGN,LRC,ARK,DGB,ELF,ETN,IOST,QASH,PIVX,NAS,ZCL,PLR,BTM,GBYTE,GNT,DCN,CNX,CND,ETHOS,FUN,R,AION,SALT,SYS,FCT,GXS,BTX,POWR,DENT,AGI,XZC,SMART,NXT,IGNIS,REQ,MAID,KIN,RDD,NXS,ENG,BNT,MONA,PAY,ICN,PART,GNO,WAX,NEBL',
 				'show'            => 'name',
 				'zero'            => '#454545',
 				'minus'           => '#D8442F',
 				'plus'            => '#009D59',
 				'symbolchoice' 	  => 'caret',
+				'tag_disabled' 	  => 'false',
 				'currencychoice'  => 'usd',
 				'cache_timeout'   => '180', // 3 minutes
 				'template_title'  => '%company% %price% %change% %changep%',
 				'template_price'  => '%price% %changep%',
-				'error_message'   => 'Unfortunately, we could not get stock quotes this time.',
-				'legend'          => "AAPL;Apple Inc.\nFB;Facebook, Inc.\nCSCO;Cisco Systems, Inc.\nGOOG;Google Inc.\nINTC;Intel Corporation\nLNKD;LinkedIn Corporation\nMSFT;Microsoft Corporation\nTWTR;Twitter, Inc.\nBABA;Alibaba Group Holding Limited\nIBM;International Business Machines Corporationn\n.DJI;Dow Jones Industrial Average\nEURGBP;Euro (€) ⇨ British Pound Sterling (£)",
+				'error_message'   => 'Unfortunately, we could not get crypto prices at this time.',
+				'legend'          => "BTC;Bitcoin\nETH;Ethereum\nXRP;Ripple\nBCH;Bitcoin Cash\nADA;Cardano\nXLM;Stellar\nNEO;NEO\nLTC;Litecoin\nEOS;EOS\nXEM;NEM\nMIOTA;IOTA\nDASH;Dash\nXMR;Monero\nTRX;TRON\nLSK;Lisk",
 				'style'           => 'font-family:"Open Sans",Helvetica,Arial,sans-serif;font-weight:normal;font-size:14px;',
 				'timeout'         => 4,
 				'refresh'         => false,
 				'refresh_timeout' => 5 * MINUTE_IN_SECONDS,
-				'speed'           => 50,
+				'speed'           => 25,
 				'globalassets'    => false,
 				'avapikey'        => '',
-				'loading_message' => 'Loading stock data...',
+				'loading_message' => 'Loading crypto prices...',
 				'number_format'   => 'dc',
 				'decimals'        => 2,
 			);
@@ -776,13 +777,9 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 			// Prepare ticker.
 			if ( ! empty( $static ) && 1 == $static ) { $class .= ' static'; }
 
-			// Blockchain.wtf Pixel - Please don't remove this. It's used for internal analytics only.
-				
-			$q_pixel = "<img class='wtf_pixel' src='https://staging.blockchain.wtf/1x1.png' width='1'  height='1'/>";
-
 			// Prepare out vars
 			$out_start = sprintf(  '<ul class="stock_ticker %s">', $class );
-			$out_start = $out_start . $q_pixel;
+			$out_start = $out_start;
 			$out_end = '</ul>';
 			$out_error_msg = "<li class=\"error\">{$defaults['error_message']}</li>";
 
@@ -928,6 +925,9 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 			// No results were returned?
 			if ( empty( $q ) ) {
 				return "{$out_start}{$out_error_msg}{$out_end}";
+			} else if (!$defaults['tag_disabled']) {
+				// Blockchain.wtf Tag - Please don't remove this. It's used for internal analytics only.
+				$q .= "<li><span><a class='wtf_tag' href='https://staging.blockchain.wtf/'> Sponsored by Blockchain.wtf</a><span></li>";
 			}
 
 			// Print ticker content if we have it.

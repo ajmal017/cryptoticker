@@ -1,6 +1,6 @@
 <?php
 /**
- * Stock Ticker General Settings
+ * Crypto Ticker General Settings
  *
  * @category Wpau_Stock_Ticker_Settings
  * @package Crypto Ticker
@@ -107,7 +107,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					),
 					'items'       => array(
 						'name'   => __( 'Company Name', 'wpaust' ),
-						'symbol' => __( 'Stock Symbol', 'wpaust' ),
+						'symbol' => __( 'Crypto Symbol', 'wpaust' ),
 					),
 					'value' => $this->defaults['show'],
 				)
@@ -309,6 +309,20 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 					'value' => $this->defaults['template_price'],
 				)
 			);
+			// Toggle for the WTF tag
+			add_settings_field(
+				$this->option_name . 'tag_enabled',
+				__( 'Disable Blockchain.wtf Tail?', 'wpaust' ),
+				array( &$this, 'settings_field_checkbox' ),
+				$wpau_stockticker->plugin_slug,
+				'wpaust_advanced',
+				array(
+					'field'       => $this->option_name . '[globalassets]',
+					'description' => __( '', 'wpaust' ),
+					'class'       => 'checkbox',
+					'value'       => isset( $this->defaults['tag_enabled'] ) ? $this->defaults['tag_enabled'] : false,
+				) // args
+			);
 			// Custom name.
 			add_settings_field(
 				$this->option_name . 'legend',
@@ -353,7 +367,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 				'wpaust_advanced',
 				array(
 					'field'       => $this->option_name . '[globalassets]',
-					'description' => __( 'By default, Stock Ticker will load corresponding JavaScript files on demand. But, if you need to load assets on all pages, check this option. (For example, if you have some plugin that load widgets or content via Ajax, you should enable this option)', 'wpaust' ),
+					'description' => __( 'By default, Crypto Ticker will load corresponding JavaScript files on demand. But, if you need to load assets on all pages, check this option. (For example, if you have some plugin that load widgets or content via Ajax, you should enable this option)', 'wpaust' ),
 					'class'       => 'checkbox',
 					'value'       => isset( $this->defaults['globalassets'] ) ? $this->defaults['globalassets'] : false,
 				) // args
@@ -370,8 +384,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 
 		public function settings_js_forcedatafetch() {
 			?>
-			<p class="description">After you update settings, you can force initial stock data fetching by click on button below. If you get too much minuses during fetch, try to increase Fetch Timeout option, save settings and fetch data again.</p>
-			<button name="st_force_data_fetch" class="button button-secondary">Fetch Stock Data Now!</button>
+			<p class="description">After you update settings, you can force initial Crypto data fetching by click on button below. If you get too much minuses during fetch, try to increase Fetch Timeout option, save settings and fetch data again.</p>
+			<button name="st_force_data_fetch" class="button button-secondary">Fetch Crypto Data Now!</button>
 			<div class="st_force_data_fetch"></div>
 			<?php
 		}
@@ -393,7 +407,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 		public function settings_default_section_description() {
 			// Think of this as help text for the section.
 			esc_attr_e(
-				'Predefine default settings for CryptoTicker. Here you can set stock symbols and how you wish to present currencies in ticker.',
+				'Predefine default settings for CryptoTicker. Here you can set Crypto symbols and how you wish to present currencies in ticker.',
 				'wpaust'
 			);
 		}
@@ -659,7 +673,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			}
 
 			// Clear transient but only if changed one of:
-			// API key, All Stock Symbols, Cache Timeout or Fetch Timeout
+			// API key, All Crypto Symbols, Cache Timeout or Fetch Timeout
 			// @TODO remove cache_timeout
 			if (
 				$previous_options['avapikey'] !== $sanitized['avapikey'] ||
@@ -667,11 +681,11 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 				$previous_options['cache_timeout'] !== $sanitized['cache_timeout'] ||
 				$previous_options['timeout'] !== $sanitized['timeout']
 			) {
-				Wpau_Stock_Ticker::log( 'Stock Ticker: Restarting data fetching from first symbol' );
+				Wpau_Stock_Ticker::log( 'Crypto Ticker: Restarting data fetching from first symbol' );
 				Wpau_Stock_Ticker::restart_av_fetching();
 			}
 
-			Wpau_Stock_Ticker::log( 'Stock Ticker: Settings have been updated' );
+			Wpau_Stock_Ticker::log( 'Crypto Ticker: Settings have been updated' );
 			return $sanitized;
 		} // END public function sanitize_options($sanitized) {
 
@@ -682,8 +696,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			global $wpau_stockticker;
 			// Add a page to manage this plugin's settings.
 			add_options_page(
-				__( 'Stock Ticker', 'wpaust' ),
-				__( 'Stock Ticker', 'wpaust' ),
+				__( 'Crypto Ticker', 'wpaust' ),
+				__( 'Crypto Ticker', 'wpaust' ),
 				'manage_options',
 				$wpau_stockticker->plugin_slug,
 				array( &$this, 'plugin_settings_page' )
@@ -704,8 +718,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 
 		/**
 		 * Allow only numbers, alphabet, comma, dot, semicolon, equal and carret
-		 * @param  string $symbols Unfiltered value of stock symbols
-		 * @return string          Sanitized value of stock symbols
+		 * @param  string $symbols Unfiltered value of Crypto symbols
+		 * @return string          Sanitized value of Crypto symbols
 		 */
 		private function sanitize_symbols( $symbols ) {
 			$symbols = preg_replace( '/[^0-9A-Z\=\.\,\:\^]+/', '', strtoupper( $symbols ) );
@@ -713,8 +727,8 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 		} // END private function sanitize_symbols( $symbols )
 
 		/**
-		 * Strip unsupported stock symbols and throw message with list of removed symbols
-		 * @param  string $symbols All stock symbols
+		 * Strip unsupported Crypto symbols and throw message with list of removed symbols
+		 * @param  string $symbols All Crypto symbols
 		 * @param  string $control Name of field where symbols goes
 		 * @return string          Only symbols supported by AlphaVantage.co
 		 */
@@ -722,7 +736,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			$symbols_supported = array();
 			$symbols_removed = array();
 			$symbols_arr = explode( ',', $symbols );
-			// Remove unsupported stock exchanges from global array to prevent API errors
+			// Remove unsupported Crypto exchanges from global array to prevent API errors
 			foreach ( $symbols_arr as $symbol_pos => $symbol_to_check ) {
 				// If there is semicolon, it's symbol with exchange
 				if ( strpos( $symbol_to_check, ':' ) ) {
@@ -744,7 +758,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker_Settings' ) ) {
 			// If we have removed symbols, add settings error message
 			if ( ! empty( $symbols_removed ) ) {
 				$symbols_removed_str = join( ', ', $symbols_removed );
-				$opt_name = 'all_symbols' == $control ? 'All Stock Symbols' : 'Stock Symbols';
+				$opt_name = 'all_symbols' == $control ? 'All Crypto Symbols' : 'Crypto Symbols';
 				add_settings_error(
 					$control,
 					$control,
