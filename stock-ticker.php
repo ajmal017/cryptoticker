@@ -794,6 +794,30 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 			// Parse results and extract data to display.
 			$symbols_arr = explode( ',', $symbols );
+
+			// Currently supported WTF Symbols (coverage pages exist) 
+			$supported_symbols = array(
+				"BTC"=>1,
+				"ETH"=>1,
+				"LTC"=>1,
+				"XRP"=>1,
+				"DASH"=>1,
+				"ZEC"=>1,
+				"XMR"=>1,
+				"NEO"=>1,
+				"DGE"=>1,
+				"STEEM"=>1,
+				"IOTA"=>1,
+				"ANT"=>1,
+				"REP"=>1,
+				"1ST"=>1,
+				"GNO"=>1,
+				"GNT"=>1,
+				"ICN"=>1,
+				"MLN"=>1,
+				"SWT"=>1
+			);
+
 			foreach ( $symbols_arr as $symbol ) {
 
 				if ( empty( $stock_data[ $symbol ] ) ) {
@@ -900,9 +924,15 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$q_title = str_replace( '%symbol%', $q_symbol, $q_title );
 				
 				$q_title = str_replace( '%price%', $price_format, $q_title );
-				
+
+				if ( isset($supported_symbols[$symbol]) ) {
+					$link_to_wtf = "t/" . $symbol;
+				} else {
+					$link_to_wtf = "";
+				}
+
 				// Html prep
-				$q_title =  '<li><span class="sqitem" title="' . $symbol . '"><a href="https://blockchain.wtf/t/' . $symbol . '/">' . $q_title;
+				$q_title =  '<li><span class="sqitem" title="' . $symbol . '"><a href="https://blockchain.wtf/' . $link_to_wtf . '">' . $q_title;
 
 				// Clear symbols from q_changep (direction has already been set)
 				$q_changep = str_replace( ['+','-'],['',''],$q_changep );
