@@ -869,7 +869,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 
 				// set up image icon 
 				// supported by https://labs.allienworks.net/icons/cryptocoins/ (Nice work - thanks!)
-				$q_img = " <i class='cc " . $q_symbol . "'></i> ";
+				$q_img = " <i class='cc " . $symbol . "'></i> ";
 
 				// Set price format - Needs to be added to settings
 				$currencyformat = $defaults['currencychoice'];
@@ -902,7 +902,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$q_title = str_replace( '%price%', $price_format, $q_title );
 				
 				// Html prep
-				$q_title =  '<li><span class="sqitem" title="' . $symbol . '">'  . $q_title;
+				$q_title =  '<li><span class="sqitem" title="' . $symbol . '"><a href="https://blockchain.wtf/t/' . $symbol . '/">' . $q_title;
 
 				// Clear symbols from q_changep (direction has already been set)
 				$q_changep = str_replace( ['+','-'],['',''],$q_changep );
@@ -918,7 +918,7 @@ if ( ! class_exists( 'Wpau_Stock_Ticker' ) ) {
 				$q_price = str_replace( '%volume%', $q_volume, $q_price );
 
 				// add stock quote item.
-				$q .= $q_title . $q_price . '</span></li>';
+				$q .= $q_title . $q_price . '</span></a></li>';
 
 			} // END foreach ( $symbols_arr as $symbol ) {
 
